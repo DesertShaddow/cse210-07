@@ -1,7 +1,7 @@
 from game.actor import Actor
 from game.cast import Cast
 
-from game.director import Director
+from game.directing.director import Director
 
 from game.services.keyboard_service import KeyboardService
 from game.services.video_service import VideoService
