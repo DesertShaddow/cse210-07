@@ -31,11 +31,10 @@ class Gems(Actor):
         speed = random.randrange(1,16)
         super().set_velocity(Point(0,speed))
 
-        #Choose a random brilliant color for the rock
+        #Choose a random brilliant color for Gems
         r = random.randrange(5,232)
         g = random.randrange(20,35)
         b = random.randrange(5,173) 
         color = Color(r,g,b)       
         super().set_color(color)
 
-        
