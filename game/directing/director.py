@@ -26,32 +26,40 @@ class Director:
         self._video_service.close_window()
 
     def _get_inputs(self, cast):
-        """Gets directional input from the keyboard and applies it to the robot.
+        """Gets directional input from the keyboard and applies it to the player.
         
         Args:
             cast (Cast): The cast of actors.
         """
-        robot = cast.get_first_actor("robots")
+
+        player = cast.get_first_actor("player")
         velocity = self._keyboard_service.get_direction()
-        robot.set_velocity(velocity)        
+        player.set_velocity(velocity)
 
     def _do_updates(self, cast):
-        """Updates the robot's position and resolves any collisions with artifacts.
+        """Updates the player's position and adds or subtracts any points with falling objects.
         
         Args:
             cast (Cast): The cast of actors.
         """
-        gem = cast.get_first_actor('gem')
-        rock = cast.get_first_actor('rock')
+        banner = cast.get_first_actor('banner')
+        rocks = cast.get_first_actor('rocks')
+        gems = cast.get_first_actor('gems')
+        player = cast.get_first_actor("player")
 
         banner.set_text("")
         max_x = self._video_service.get_width()
         max_y = self._video_service.get_height()
-        robot.move_next(max_x, max_y)
+        player.move_next(max_x, max_y)
         
-        for artifact in artifacts:
-            if robot.get_position().equals(artifact.get_position()):
-                message = artifact.get_message()
+        for rock in rocks:
+            if player.get_position().equals(rock.get_position()):
+                message = rock.get_message()
+                banner.set_text(message)    
+        
+        for gem in gems:
+            if player.get_position().equals(gem.get_position()):
+                message = gem.get_message()
                 banner.set_text(message)    
         
     def _do_outputs(self, cast):
