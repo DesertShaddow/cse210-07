@@ -19,14 +19,15 @@ COLS = 60
 ROWS = 40
 CAPTION = "Greed"
 WHITE = Color(255, 255, 255)
-DEFAULT_ARTIFACTS = 40
-
 
 def main():
     """
         main() for greed
         Borrowing the paradigm established
         by the rfk example this week
+
+        Creates player object, video and keyboard services, the director
+        and then hands off control to the director
     """
     
     # create the cast
@@ -34,7 +35,7 @@ def main():
     
     # create the banner
     banner = Actor()
-    banner.set_text("Score: ")
+    banner.set_text(f"Score: 0")
     banner.set_font_size(FONT_SIZE)
     banner.set_color(WHITE)
     banner.set_position(Point(CELL_SIZE, 0))
@@ -43,7 +44,7 @@ def main():
     # create the player
     x = int(MAX_X / 2)
     # player starts at the bottom
-    y = int(MAX_Y)
+    y = MAX_Y - CELL_SIZE
     position = Point(x, y)
 
     player = Actor()
