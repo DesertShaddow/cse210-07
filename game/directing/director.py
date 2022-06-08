@@ -1,3 +1,6 @@
+from game.gems import Gems
+from game.rock import Rock
+
 class Director:
     '''
     '''
@@ -11,6 +14,9 @@ class Director:
         """
         self._keyboard_service = keyboard_service
         self._video_service = video_service
+
+        self.gems = Gems()
+        self.rocks = Rock()
         
     def start_game(self, cast):
         """Starts the game using the given cast. Runs the main game loop.
@@ -32,7 +38,7 @@ class Director:
             cast (Cast): The cast of actors.
         """
 
-        player = cast.get_first_actor("player")
+        player = cast.get_first_actor("players")
         velocity = self._keyboard_service.get_direction()
         player.set_velocity(velocity)
 
@@ -43,24 +49,22 @@ class Director:
             cast (Cast): The cast of actors.
         """
         banner = cast.get_first_actor('banner')
-        rocks = cast.get_first_actor('rocks')
-        gems = cast.get_first_actor('gems')
-        player = cast.get_first_actor("player")
+        player = cast.get_first_actor("players")
 
-        banner.set_text("")
+        # banner.set_text("")
         max_x = self._video_service.get_width()
         max_y = self._video_service.get_height()
         player.move_next(max_x, max_y)
         
-        for rock in rocks:
-            if player.get_position().equals(rock.get_position()):
-                message = rock.get_message()
-                banner.set_text(message)    
+        for rock in self.rocks:
+            if player.get_position().close_enough():
+                points = rock.get_points()
+                banner.set_text(points)
         
-        for gem in gems:
-            if player.get_position().equals(gem.get_position()):
-                message = gem.get_message()
-                banner.set_text(message)    
+        for gem in self.gems:
+            if player.get_position().close_enough():
+                points = gem.get_points()
+                banner.set_text(f'Score: {points}')    
         
     def _do_outputs(self, cast):
         """Draws the actors on the screen.
