@@ -57,13 +57,13 @@ class Director:
         player.move_next(max_x, max_y)
         
         for rock in self.rocks:
-            if player.get_position().close_enough():
-                points = rock.get_points()
+            if player.get_position().close_enough(rock.get_position(), self._video_service.get_cell_size):
+                points = rock.set_points()
                 banner.set_text(points)
         
         for gem in self.gems:
-            if player.get_position().close_enough():
-                points = gem.get_points()
+            if player.get_position().close_enough(gem.get_position(), self._video_service.get_cell_size):
+                points = gem.set_points()
                 banner.set_text(f'Score: {points}')    
         
     def _do_outputs(self, cast):
