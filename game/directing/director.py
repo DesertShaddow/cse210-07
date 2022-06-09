@@ -1,6 +1,3 @@
-from game.gems import Gems
-from game.rock import Rock
-
 class Director:
     '''
     '''
@@ -14,9 +11,6 @@ class Director:
         """
         self._keyboard_service = keyboard_service
         self._video_service = video_service
-
-        self.gems = Gems()
-        self.rocks = Rock()
         
     def start_game(self, cast):
         """Starts the game using the given cast. Runs the main game loop.
@@ -38,8 +32,12 @@ class Director:
             cast (Cast): The cast of actors.
         """
 
+        rocks = cast.get_first_actor("rocks")
+        gems = cast.get_first_actor("gems")
         player = cast.get_first_actor("players")
         velocity = self._keyboard_service.get_direction()
+        rocks.set_velocity(velocity)
+        gems.set_velocity(velocity)
         player.set_velocity(velocity)
 
     def _do_updates(self, cast):
@@ -49,19 +47,19 @@ class Director:
             cast (Cast): The cast of actors.
         """
         banner = cast.get_first_actor('banner')
-        player = cast.get_first_actor("players")
+        player = cast.get_first_actor('players')
 
         # banner.set_text("")
         max_x = self._video_service.get_width()
         max_y = self._video_service.get_height()
         player.move_next(max_x, max_y)
         
-        for rock in self.rocks:
+        for rock in rocks:
             if player.get_position().close_enough(rock.get_position(), self._video_service.get_cell_size):
                 points = rock.set_points()
-                banner.set_text(points)
+                banner.set_text(f'Score: {points}')
         
-        for gem in self.gems:
+        for gem in gems:
             if player.get_position().close_enough(gem.get_position(), self._video_service.get_cell_size):
                 points = gem.set_points()
                 banner.set_text(f'Score: {points}')    
